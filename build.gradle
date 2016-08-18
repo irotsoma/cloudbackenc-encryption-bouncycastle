@@ -1,0 +1,46 @@
+group 'com.irotsoma.cloudbackenc.encryptionservice'
+version '0.1-SNAPSHOT'
+def localMavenRepository = "$rootDir/../../maven-repository"
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.3'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+repositories {
+    mavenCentral()
+    maven{url localMavenRepository}
+}
+
+dependencies {
+    compile 'com.irotsoma.cloudbackenc:common:0.1-SNAPSHOT'
+    compile 'com.irotsoma.cloudbackenc:encryptionservice:0.1-SNAPSHOT'
+}
+
+apply plugin: 'maven-publish'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url localMavenRepository
+        }
+    }
+}
+
+//TODO: Add only classes not part of central controller to fat jar
+jar {
+    //build a fat jar with dependencies
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
