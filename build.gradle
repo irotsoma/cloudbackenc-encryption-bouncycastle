@@ -28,6 +28,7 @@ dependencies {
     compile 'com.irotsoma.cloudbackenc:common:0.1-SNAPSHOT'
     compile 'com.irotsoma.cloudbackenc:encryptionservice:0.1-SNAPSHOT'
     compile 'org.bouncycastle:bcprov-jdk15on:1.55'
+    testCompile 'junit:junit:4.12'
 
 }
 apply plugin: 'maven-publish'
