@@ -4,6 +4,8 @@ import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceStringServic
 
 /**
  * Created by irotsoma on 8/25/2016.
+ *
+ * Bouncy Castle implementation of String encryption and decryption services
  */
 class BouncyCastleStringService: EncryptionServiceStringService {
 }

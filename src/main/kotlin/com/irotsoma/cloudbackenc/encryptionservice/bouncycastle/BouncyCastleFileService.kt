@@ -1,84 +1,63 @@
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
 import com.irotsoma.cloudbackenc.common.logger
+import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceEncryptionAlgorithms
 import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceException
 import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceFileService
-import org.bouncycastle.crypto.CryptoException
-import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.PrivateKey
 import java.security.PublicKey
+import java.security.SecureRandom
 import javax.crypto.Cipher
+import javax.crypto.CipherInputStream
+import javax.crypto.CipherOutputStream
 import javax.crypto.SecretKey
+import javax.crypto.spec.IvParameterSpec
 
 /**
  * Created by irotsoma on 8/25/2016.
+ *
+ * Bouncy Castle impementation of encryption and decryption algorithms for files.
  */
 class BouncyCastleFileService : EncryptionServiceFileService {
     companion object { val LOG by logger() }
-    //TODO: works with AES as algorithm but issue when using AES/CBC/PKCS5Padding.  java.security.InvalidKeyException: no IV set when one expected.  Seems to need an IV in order to decrypt, but when this is added, the first 16 bytes of the decrypted file are different from the original.  Likely needs to be the same as the one used to encrypt, also seems to need to use the same block size as the iv?  Needs more research.
-    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: String) {
-        val decryptionCipher = Cipher.getInstance(algorithm, "BC")
-        decryptionCipher.init(Cipher.DECRYPT_MODE, key)
-        transform(inputStream, outputStream, decryptionCipher)
+    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
+        val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
+        decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
+        val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
+        copy(cipherInputStream, outputStream)
     }
 
-    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: String) {
-        val encryptionCipher = Cipher.getInstance(algorithm, "BC")
-        encryptionCipher.init(Cipher.ENCRYPT_MODE, key)
-        transform(inputStream, outputStream, encryptionCipher)
+    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
+        val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
+        encryptionCipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec, secureRandom)
+        val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)
+        copy(inputStream,cipherOutputStream)
     }
 
-    fun transform(inputStream: InputStream, outputStream: OutputStream, cipher: Cipher){
-        val inBlockSize = 16
-        val outBlockSize = cipher.getOutputSize(inBlockSize)
-
-        val inBlock = ByteArray(inBlockSize)
-        val outBlock = ByteArray(outBlockSize)
-
+    private fun copy(inputStream: InputStream, outputStream: OutputStream) {
         try {
-            var inLength = inputStream.read(inBlock, 0, inBlockSize)
-            var outLength: Int
-            while (inLength > 0) {
-                outLength = cipher.update(inBlock, 0, inLength, outBlock, 0)
-                if (outLength > 0) {
-                    outputStream.write(outBlock, 0, outLength)
-                }
-                inLength = inputStream.read(inBlock, 0, inBlockSize)
-            }
-            try {
-                outLength = cipher.doFinal(outBlock, 0)
-                if (outLength > 0) {
-                    outputStream.write(outBlock, 0, outLength)
-                }
-            } catch (ce: CryptoException) {
-                LOG.error(ce.message)
-                throw EncryptionServiceException(ce.message,ce)
+            val byteArray = ByteArray(1024)
+            var inputLength = inputStream.read(byteArray)
+            while (inputLength != -1) {
+                outputStream.write(byteArray, 0, inputLength)
+                inputLength = inputStream.read(byteArray)
             }
             inputStream.close()
+            outputStream.flush()
             outputStream.close()
-        } catch (ioe: IOException) {
-            LOG.error(ioe.message)
-            throw EncryptionServiceException(ioe.message, ioe)
+        } catch (ex: Exception) {
+            LOG.error(ex.message)
+            throw EncryptionServiceException(ex.message, ex)
         }
-
     }
 
-
-
-
-
-
-
-
-
-
-    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: String) {
+    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionServiceEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: String) {
+    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionServiceEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
