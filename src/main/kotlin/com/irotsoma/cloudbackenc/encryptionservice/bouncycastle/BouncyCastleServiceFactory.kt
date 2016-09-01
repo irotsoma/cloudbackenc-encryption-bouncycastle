@@ -31,8 +31,21 @@ import java.security.Security
  */
 class BouncyCastleServiceFactory: EncryptionServiceFactory {
     override val supportedPBKDFAlgorithms = arrayOf(EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1)
-    override val supportedKeyAlgorithms = arrayOf(EncryptionServiceKeyAlgorithms.AES)
-    override val supportedEncryptionAlgorithms = arrayOf(EncryptionServiceEncryptionAlgorithms.AES, EncryptionServiceEncryptionAlgorithms.AES_CBC_PKCS5Padding)
+    override val supportedKeyAlgorithms = arrayOf(
+            EncryptionServiceKeyAlgorithms.AES,
+            EncryptionServiceKeyAlgorithms.Blowfish,
+            EncryptionServiceKeyAlgorithms.DES,
+            EncryptionServiceKeyAlgorithms.SKIPJACK,
+            EncryptionServiceKeyAlgorithms.Twofish)
+    override val supportedEncryptionAlgorithms = arrayOf(
+            EncryptionServiceEncryptionAlgorithms.AES,
+            EncryptionServiceEncryptionAlgorithms.AES_CBC_PKCS5Padding,
+            EncryptionServiceEncryptionAlgorithms.AES_ECB_WithCTS,
+            EncryptionServiceEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
+            EncryptionServiceEncryptionAlgorithms.DES_CBC_PKCS5Padding,
+            EncryptionServiceEncryptionAlgorithms.DES_ECB_WithCTS,
+            EncryptionServiceEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
+            EncryptionServiceEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
     override val encryptionServiceFileService = BouncyCastleFileService()
     override val encryptionServiceKeyService = BouncyCastleKeyService()
     override val encryptionServiceStringService = BouncyCastleStringService()
