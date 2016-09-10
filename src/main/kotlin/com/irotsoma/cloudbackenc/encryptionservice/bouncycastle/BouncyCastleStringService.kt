@@ -17,8 +17,8 @@
 
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceStringService
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceStringService
 import org.bouncycastle.util.encoders.Base64
 import java.security.PrivateKey
 import java.security.PublicKey

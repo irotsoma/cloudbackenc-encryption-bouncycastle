@@ -17,10 +17,10 @@
 
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceException
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceFileService
 import com.irotsoma.cloudbackenc.common.logger
-import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceException
-import com.irotsoma.cloudbackenc.encryptionservice.EncryptionServiceFileService
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.PrivateKey
