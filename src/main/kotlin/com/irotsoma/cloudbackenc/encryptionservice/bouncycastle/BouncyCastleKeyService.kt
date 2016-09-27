@@ -37,17 +37,12 @@ import javax.crypto.spec.PBEKeySpec
 class BouncyCastleKeyService: EncryptionServiceKeyService {
     val DEFAULT_PBKDF_ITERATIONS = 64000
 
-
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
         return generatePasswordBasedKey(password, salt, EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
     }
 
-    override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionServicePBKDFAlgorithms, keySize: Int): SecretKey? {
-        return generatePasswordBasedKey(password, salt, algorithm, keySize, DEFAULT_PBKDF_ITERATIONS)
-    }
-
     override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionServicePBKDFAlgorithms, keySize: Int, iterations: Int): SecretKey? {
-        val keySpec = PBEKeySpec(password.toCharArray(), salt, iterations, 128)
+        val keySpec = PBEKeySpec(password.toCharArray(), salt, iterations, keySize)
         val keyFactory = SecretKeyFactory.getInstance(algorithm.value, "BC")
         return keyFactory.generateSecret(keySpec)
     }

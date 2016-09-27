@@ -49,8 +49,6 @@ class BCEncryptionTests {
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.AES, 128, 16, EncryptionServiceEncryptionAlgorithms.AES)
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.AES, 128, 16, EncryptionServiceEncryptionAlgorithms.AES_CBC_PKCS5Padding)
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.AES, 128, -1, EncryptionServiceEncryptionAlgorithms.AES_ECB_WithCTS)
-        RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.DES, 64, 8, EncryptionServiceEncryptionAlgorithms.DES_CBC_PKCS5Padding)
-        RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.DES, 64, -1, EncryptionServiceEncryptionAlgorithms.DES_ECB_WithCTS)
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.SKIPJACK, 128, -1, EncryptionServiceEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding)
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.Twofish, 128, 16, EncryptionServiceEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
         RunFileTestWithSymmetricKey(testFilePath,expectedHash,encryptionFactory,EncryptionServiceKeyAlgorithms.Blowfish, 128, 8, EncryptionServiceEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding)

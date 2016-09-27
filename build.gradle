@@ -37,49 +37,29 @@ apply plugin: 'kotlin'
 repositories {
     mavenCentral()
     maven{url localMavenRepository}
+    //if the current project is a snapshot then allow using snapshot versions from maven central  Having this as an if prevents accidentally building a release version with snapshot dependencies.
+    if (project.version.endsWith('-SNAPSHOT')){
+        maven{
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+}
+if (project.version.endsWith('-SNAPSHOT')) {
+    configurations.all {
+        // check for updates every build
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.irotsoma.cloudbackenc:common:0.1-SNAPSHOT'
-    compile 'com.irotsoma.cloudbackenc:encryptionservice:0.1-SNAPSHOT'
+    compile 'com.irotsoma.cloudbackenc:common:0.1'
+    compile 'com.irotsoma.cloudbackenc:encryptionservice:0.2-SNAPSHOT'
     compile 'org.bouncycastle:bcprov-jdk15on:1.55'
     testCompile 'junit:junit:4.12'
 
 }
-apply plugin: 'maven-publish'
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', 'Bouncycastle encryption extension for CloudBackEnc.')
-                root.appendNode('url', 'https://irotsoma.github.io/cloudbackenc/')
-                def license = root.appendNode('licenses').appendNode('license')
-                license.appendNode('name', 'GNU Lesser General Public License, Version 3.0')
-                license.appendNode('url', 'http://www.gnu.org/licenses/lgpl.txt')
-                license.appendNode('distribution', 'repo')
-                def developers = root.appendNode('developers')
-                def developer1 = developers.appendNode('developer')
-                developer1.appendNode('id','irotsoma')
-                developer1.appendNode('name', 'Justin Zak')
-                developer1.appendNode('email','irotsomadev@gmail.com')
-                developer1.appendNode('organization', 'Irotsoma, LLC')
-                developer1.appendNode('organizationUrl','https://www.irotsoma.com')
-                def scm = root.appendNode('scm')
-                scm.appendNode('connection','scm:git:git@github.com:irotsoma/cloudbackenc.git')
-                scm.appendNode('developerConnection','scm:git:git@github.com:irotsoma/cloudbackenc.git')
-                scm.appendNode('url','git@github.com:irotsoma/cloudbackenc.git')
-            }
-        }
-    }
-    repositories {
-        maven {
-            url localMavenRepository
-        }
-    }
-}
+
 apply plugin: 'signing'
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 signing {
@@ -113,7 +93,7 @@ apply plugin: 'com.github.hierynomus.license'
 license {
     ignoreFailures true
     mapping ('kt', 'JAVADOC_STYLE')
-    excludes(['**/*.json', '**/*.properties', '**/LICENSE', '**/*license*.html', '**/*license*.xml'])
+    excludes(['**/*.json', '**/*.properties', '**/LICENSE', '**/*license*.html', '**/*license*.xml', '**COPYING', '**COPYING.LESSER'])
 }
 task copyLicenseReports(type: Copy){
     from "$buildDir/reports/license/"
