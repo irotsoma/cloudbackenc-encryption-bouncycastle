@@ -21,6 +21,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.9"
     }
 }
 plugins {
@@ -87,13 +88,35 @@ sourceSets {
     }
 }
 
+//javadoc stuff for Kotlin
+apply plugin: 'org.jetbrains.dokka'
+dokka {
+    moduleName = 'data'
+    outputFormat = 'javadoc'
+    org.gradle.api.tasks.OutputDirectory = "$buildDir/docs/javadoc"
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/cy6erGn0m/vertx3-lang-kotlin/blob/master/src/main/kotlin"
+        suffix = "#L"
+    }
+    sourceDirs = files('src/main/kotlin')
+}
+task javadocJar(type: org.gradle.api.tasks.bundling.Jar, dependsOn: dokka) {
+    classifier = 'javadoc'
+    from dokka.outputDirectory
+}
+task sourceJar(type: org.gradle.api.tasks.bundling.Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
 //this section downloads some reports regarding the licenses of various dependencies and includes them in the
 // META-INF/licenses folder
 apply plugin: 'com.github.hierynomus.license'
 license {
     ignoreFailures true
     mapping ('kt', 'JAVADOC_STYLE')
-    excludes(['**/*.json', '**/*.properties', '**/LICENSE', '**/*license*.html', '**/*license*.xml', '**COPYING', '**COPYING.LESSER'])
+    excludes(['**/*.json', '**/*.properties', '**/LICENSE', '**/*license*.html', '**/*license*.xml', '**/COPYING', '**/COPYING.LESSER', '**/*.dat'])
 }
 task copyLicenseReports(type: Copy){
     from "$buildDir/reports/license/"

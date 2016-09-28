@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-
+/*
+ * Created by irotsoma on 8/25/2016.
+ */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceKeyAlgorithms
@@ -30,7 +32,6 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 /**
- * Created by irotsoma on 8/25/2016.
  *
  * Bouncy Castle implementation of encryption key generation services
  */

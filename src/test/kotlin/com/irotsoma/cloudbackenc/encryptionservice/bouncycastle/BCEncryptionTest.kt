@@ -14,7 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
-
+/*
+ * Created by irotsoma on 8/25/2016.
+ */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceEncryptionAlgorithms
@@ -28,9 +30,6 @@ import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.crypto.spec.IvParameterSpec
 
-/**
- * Created by irotsoma on 8/25/2016.
- */
 class BCEncryptionTests {
 
     val secureRandom: SecureRandom = SecureRandom.getInstanceStrong()
