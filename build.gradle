@@ -93,7 +93,7 @@ apply plugin: 'org.jetbrains.dokka'
 dokka {
     moduleName = 'data'
     outputFormat = 'javadoc'
-    org.gradle.api.tasks.OutputDirectory = "$buildDir/docs/javadoc"
+    outputDirectory = "$buildDir/docs/javadoc"
     linkMapping {
         dir = "src/main/kotlin"
         url = "https://github.com/cy6erGn0m/vertx3-lang-kotlin/blob/master/src/main/kotlin"
