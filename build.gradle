@@ -29,7 +29,7 @@ plugins {
 }
 
 group 'com.irotsoma.cloudbackenc.encryptionservice'
-version '0.1-SNAPSHOT'
+version '0.2-SNAPSHOT'
 def localMavenRepository = "$rootDir/../../maven-repository"
 
 apply plugin: 'java'
@@ -54,7 +54,7 @@ if (project.version.endsWith('-SNAPSHOT')) {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.irotsoma.cloudbackenc:common:0.1'
+    compile 'com.irotsoma.cloudbackenc:common:0.2-SNAPSHOT'
     compile 'com.irotsoma.cloudbackenc:encryptionservice:0.2-SNAPSHOT'
     compile 'org.bouncycastle:bcprov-jdk15on:1.55'
     testCompile 'junit:junit:4.12'
