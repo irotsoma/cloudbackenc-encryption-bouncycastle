@@ -101,11 +101,11 @@ dokka {
     }
     sourceDirs = files('src/main/kotlin')
 }
-task javadocJar(type: org.gradle.api.tasks.bundling.Jar, dependsOn: dokka) {
+task javadocJar(type: Jar, dependsOn: dokka) {
     classifier = 'javadoc'
     from dokka.outputDirectory
 }
-task sourceJar(type: org.gradle.api.tasks.bundling.Jar) {
+task sourceJar(type: Jar) {
     classifier = 'sources'
     from sourceSets.main.allSource
 }
