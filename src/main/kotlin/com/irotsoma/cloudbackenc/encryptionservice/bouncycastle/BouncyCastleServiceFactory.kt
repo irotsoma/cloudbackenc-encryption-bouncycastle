@@ -19,9 +19,7 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceEncryptionAlgorithms
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceFactory
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceKeyAlgorithms
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServicePBKDFAlgorithms
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
@@ -31,18 +29,20 @@ import java.security.Security
  */
 class BouncyCastleServiceFactory: EncryptionServiceFactory {
     override val supportedPBKDFAlgorithms = arrayOf(EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1)
-    override val supportedKeyAlgorithms = arrayOf(
-            EncryptionServiceKeyAlgorithms.AES,
-            EncryptionServiceKeyAlgorithms.Blowfish,
-            EncryptionServiceKeyAlgorithms.SKIPJACK,
-            EncryptionServiceKeyAlgorithms.Twofish)
-    override val supportedEncryptionAlgorithms = arrayOf(
-            EncryptionServiceEncryptionAlgorithms.AES,
-            EncryptionServiceEncryptionAlgorithms.AES_CBC_PKCS5Padding,
-            EncryptionServiceEncryptionAlgorithms.AES_ECB_WithCTS,
-            EncryptionServiceEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
-            EncryptionServiceEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
-            EncryptionServiceEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
+    override val supportedSymmetricKeyAlgorithms = arrayOf(
+            EncryptionServiceSymmetricKeyAlgorithms.AES,
+            EncryptionServiceSymmetricKeyAlgorithms.Blowfish,
+            EncryptionServiceSymmetricKeyAlgorithms.SKIPJACK,
+            EncryptionServiceSymmetricKeyAlgorithms.Twofish)
+    override val supportedSymmetricEncryptionAlgorithms = arrayOf(
+            EncryptionServiceSymmetricEncryptionAlgorithms.AES,
+            EncryptionServiceSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding,
+            EncryptionServiceSymmetricEncryptionAlgorithms.AES_ECB_WithCTS,
+            EncryptionServiceSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
+            EncryptionServiceSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
+            EncryptionServiceSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
+    override val supportedAsymmetricEncryptionAlgorithms = emptyArray<EncryptionServiceAssymetricEncryptionAlgorithms>()
+    override val supportedAsymmetricKeyAlgorithms = emptyArray<EncryptionServiceAsymmetricKeyAlgorithms>()
     override val encryptionServiceFileService = BouncyCastleFileService()
     override val encryptionServiceKeyService = BouncyCastleKeyService()
     override val encryptionServiceStringService = BouncyCastleStringService()
