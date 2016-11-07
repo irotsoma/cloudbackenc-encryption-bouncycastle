@@ -19,9 +19,10 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceKeyAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceAsymmetricKeyAlgorithms
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceKeyService
 import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServicePBKDFAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceSymmetricKeyAlgorithms
 import com.irotsoma.cloudbackenc.common.logger
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
@@ -36,7 +37,10 @@ import javax.crypto.spec.PBEKeySpec
  * Bouncy Castle implementation of encryption key generation services
  */
 class BouncyCastleKeyService: EncryptionServiceKeyService {
-    val DEFAULT_PBKDF_ITERATIONS = 64000
+    companion object {
+        val LOG by logger()
+        val DEFAULT_PBKDF_ITERATIONS = 64000
+    }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
         return generatePasswordBasedKey(password, salt, EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
@@ -49,14 +53,14 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
     }
 
 
-    companion object { val LOG by logger() }
+
     override fun generateSymmetricKey(): SecretKey? {
-        return generateSymmetricKey(EncryptionServiceKeyAlgorithms.AES, 128, SecureRandom.getInstanceStrong())
+        return generateSymmetricKey(EncryptionServiceSymmetricKeyAlgorithms.AES, 128, SecureRandom.getInstanceStrong())
     }
-    override fun generateSymmetricKey(algorithm: EncryptionServiceKeyAlgorithms, keySize: Int): SecretKey? {
+    override fun generateSymmetricKey(algorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize: Int): SecretKey? {
         return generateSymmetricKey(algorithm, keySize, SecureRandom.getInstanceStrong())
     }
-    override fun generateSymmetricKey(algorithm: EncryptionServiceKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): SecretKey? {
+    override fun generateSymmetricKey(algorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): SecretKey? {
         try {
             val keyGen = KeyGenerator.getInstance(algorithm.value, "BC")
             keyGen.init(keySize, secureRandom)
@@ -67,19 +71,15 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
         }
     }
 
-
-
-
-
     override fun generateAsymmetricKeys(): KeyPair? {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    override fun generateAsymmetricKeys(algorithm: EncryptionServiceKeyAlgorithms, keySize: Int): KeyPair? {
+    override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int): KeyPair? {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun generateAsymmetricKeys(algorithm: EncryptionServiceKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): KeyPair? {
+    override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): KeyPair? {
         throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
+
 }
