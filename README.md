@@ -1,5 +1,7 @@
 # encryptionservice-bouncycastle
 
+Build Status:  [![CircleCI](https://circleci.com/gh/irotsoma/encryptionservice-bouncycastle.svg?style=svg)](https://circleci.com/gh/irotsoma/encryptionservice-bouncycastle)
+
 Encryption extension for CloudBackEnc using bouncycastle APIs
 
 <span style="font-size: .5em;">
