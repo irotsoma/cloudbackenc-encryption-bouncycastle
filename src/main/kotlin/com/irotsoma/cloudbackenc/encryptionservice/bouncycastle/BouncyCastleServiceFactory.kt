@@ -19,8 +19,7 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceFactory
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServicePBKDFAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionservice.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 
@@ -41,7 +40,7 @@ class BouncyCastleServiceFactory: EncryptionServiceFactory {
             EncryptionServiceSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
             EncryptionServiceSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
             EncryptionServiceSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
-    override val supportedAsymmetricEncryptionAlgorithms = emptyArray<EncryptionServiceAssymetricEncryptionAlgorithms>()
+    override val supportedAsymmetricEncryptionAlgorithms = emptyArray<EncryptionServiceAsymmetricEncryptionAlgorithms>()
     override val supportedAsymmetricKeyAlgorithms = emptyArray<EncryptionServiceAsymmetricKeyAlgorithms>()
     override val encryptionServiceFileService = BouncyCastleFileService()
     override val encryptionServiceKeyService = BouncyCastleKeyService()
