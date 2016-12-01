@@ -3,4 +3,5 @@
   "serviceName": "Bouncy Castle",
   "packageName": "com.irotsoma.cloudbackenc.encryptionservice.bouncycastle",
   "factoryClass": "BouncyCastleServiceFactory"
+  "releaseVersion": 1
 }

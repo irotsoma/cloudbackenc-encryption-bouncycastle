@@ -21,7 +21,7 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.9"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.10"
     }
 }
 plugins {
@@ -45,12 +45,6 @@ repositories {
         }
     }
 }
-if (project.version.endsWith('-SNAPSHOT')) {
-    configurations.all {
-        // check for updates every build
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
-}
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -62,11 +56,20 @@ dependencies {
 }
 
 apply plugin: 'signing'
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+def isReleaseVersion = !version.endsWith("SNAPSHOT")
 signing {
     required { isReleaseVersion }
     sign configurations.archives
 }
+if (!isReleaseVersion) {
+    configurations.all {
+        // check for updates every build
+        resolutionStrategy{
+            cacheChangingModulesFor 0, 'seconds'
+        }
+    }
+}
+
 jar {
     //build a fat jar with dependencies to ease central controller loading resources at runtime
     from {
