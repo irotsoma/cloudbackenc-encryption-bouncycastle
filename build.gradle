@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 buildscript {
-    ext.kotlin_version = '1.0.5'
+    ext.kotlin_version = '1.0.5-2'
     repositories {
         mavenCentral()
     }
@@ -49,7 +49,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'com.irotsoma.cloudbackenc:common:0.2-SNAPSHOT'
-    compile 'com.irotsoma.cloudbackenc:encryptionservice:0.2-SNAPSHOT'
+    compile 'com.irotsoma.cloudbackenc.common:encryptionserviceinterface:0.2-SNAPSHOT'
     compile 'org.bouncycastle:bcprov-jdk15on:1.55'
     testCompile 'junit:junit:4.12'
 

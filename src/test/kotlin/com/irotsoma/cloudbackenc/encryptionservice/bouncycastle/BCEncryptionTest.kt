@@ -19,9 +19,9 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServicePBKDFAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceSymmetricEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceSymmetricKeyAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServicePBKDFAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricKeyAlgorithms
 import org.bouncycastle.util.encoders.Hex
 import org.junit.Test
 import java.io.File

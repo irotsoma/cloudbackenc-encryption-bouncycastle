@@ -19,10 +19,10 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceAsymmetricEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceException
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceFileService
-import com.irotsoma.cloudbackenc.common.encryptionservice.EncryptionServiceSymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceAsymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceException
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceFileService
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricEncryptionAlgorithms
 import com.irotsoma.cloudbackenc.common.logger
 import java.io.InputStream
 import java.io.OutputStream

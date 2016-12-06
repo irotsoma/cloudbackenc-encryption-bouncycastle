@@ -19,7 +19,7 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionservice.*
+import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 
