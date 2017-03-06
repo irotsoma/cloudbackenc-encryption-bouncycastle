@@ -23,7 +23,7 @@ import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionSer
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceException
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceFileService
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.common.logger
+import mu.KLogging
 import java.io.InputStream
 import java.io.OutputStream
 import java.security.PrivateKey
@@ -39,7 +39,8 @@ import javax.crypto.spec.IvParameterSpec
  * Bouncy Castle implementation of encryption and decryption algorithms for files.
  */
 class BouncyCastleFileService : EncryptionServiceFileService() {
-    companion object { val LOG by logger() }
+    /** kotlin-logging implementation*/
+    companion object: KLogging()
     override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
@@ -66,7 +67,7 @@ class BouncyCastleFileService : EncryptionServiceFileService() {
             outputStream.flush()
             outputStream.close()
         } catch (ex: Exception) {
-            LOG.error(ex.message)
+            logger.error{ex.message}
             throw EncryptionServiceException(ex.message, ex)
         }
     }

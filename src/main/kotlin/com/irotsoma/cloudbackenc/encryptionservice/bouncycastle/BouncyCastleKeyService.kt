@@ -23,7 +23,7 @@ import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionSer
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceKeyService
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServicePBKDFAlgorithms
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricKeyAlgorithms
-import com.irotsoma.cloudbackenc.common.logger
+import mu.KLogging
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
@@ -37,9 +37,8 @@ import javax.crypto.spec.PBEKeySpec
  * Bouncy Castle implementation of encryption key generation services
  */
 class BouncyCastleKeyService: EncryptionServiceKeyService {
-    companion object {
-        val LOG by logger()
-        val DEFAULT_PBKDF_ITERATIONS = 64000
+    companion object: KLogging() {
+        const val DEFAULT_PBKDF_ITERATIONS = 64000
     }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
@@ -66,7 +65,7 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
             keyGen.init(keySize, secureRandom)
             return keyGen.generateKey()
         } catch (e: NoSuchAlgorithmException) {
-            LOG.error("Unsupported algorithm: $algorithm, size: $keySize", e)
+            logger.error("Unsupported algorithm: $algorithm, size: $keySize", e)
             return null
         }
     }
