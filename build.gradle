@@ -86,7 +86,9 @@ sourceSets {
         }
     }
 }
-
+compileKotlin {
+    kotlinOptions.jvmTarget= "1.8"
+}
 //javadoc stuff for Kotlin
 apply plugin: 'org.jetbrains.dokka'
 dokka {
