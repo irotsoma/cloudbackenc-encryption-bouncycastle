@@ -15,7 +15,7 @@
  */
 buildscript {
     ext.commonVersion='0.2-SNAPSHOT'
-    ext.kotlin_version = '1.1.1'
+    ext.kotlin_version = '1.1.2'
     ext.dokkaVersion = '0.9.13'
     ext.junitVersion = '4.12'
     ext.bouncyCastleVersion = '1.56'
