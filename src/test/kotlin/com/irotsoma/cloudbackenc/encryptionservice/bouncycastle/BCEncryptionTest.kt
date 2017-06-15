@@ -31,7 +31,7 @@ import javax.crypto.spec.IvParameterSpec
 
 class BCEncryptionTests {
 
-    val secureRandom: SecureRandom = SecureRandom.getInstanceStrong()
+    val secureRandom: SecureRandom = SecureRandom()
     val testString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ /0123456789abcdefghijklmnopqrstuvwxyz £©µÀÆÖÞßéöÿ–—‘“”„†•…‰™œŠŸž€ ΑΒΓΔΩαβγδω АБВГДабвгд∀∂∈ℝ∧∪≡∞ ↑↗↨↻⇣ ┐┼╔╘░►☺♀ ﬁ�⑀₂ἠḂӥẄɐː⍎אԱა"
     val testPassword = "ThisIsMyPassword"
     val testSalt = "randomvalue"
