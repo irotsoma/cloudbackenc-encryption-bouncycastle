@@ -24,6 +24,7 @@ import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionSer
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricKeyAlgorithms
 import mu.KLogging
 import java.security.KeyPair
+import java.security.KeyPairGenerator
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 import javax.crypto.KeyGenerator
@@ -70,14 +71,21 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
     }
 
     override fun generateAsymmetricKeys(): KeyPair? {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return generateAsymmetricKeys(EncryptionServiceAsymmetricKeyAlgorithms.RSA, 4096, SecureRandom.getInstanceStrong())
     }
     override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int): KeyPair? {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return generateAsymmetricKeys(algorithm, keySize, SecureRandom.getInstanceStrong())
     }
 
     override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): KeyPair? {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        try{
+            val keyGen = KeyPairGenerator.getInstance(algorithm.value,"BC")
+            keyGen.initialize(keySize, secureRandom)
+            return keyGen.generateKeyPair()
+        } catch (e: NoSuchAlgorithmException) {
+            logger.error("Unsupported algorithm: $algorithm, size: $keySize", e)
+            return null
+        }
     }
 
 }

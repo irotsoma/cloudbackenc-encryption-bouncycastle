@@ -39,8 +39,11 @@ class BouncyCastleServiceFactory: EncryptionServiceFactory {
             EncryptionServiceSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
             EncryptionServiceSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
             EncryptionServiceSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
-    override val supportedAsymmetricEncryptionAlgorithms = emptyArray<EncryptionServiceAsymmetricEncryptionAlgorithms>()
-    override val supportedAsymmetricKeyAlgorithms = emptyArray<EncryptionServiceAsymmetricKeyAlgorithms>()
+    override val supportedAsymmetricEncryptionAlgorithms = arrayOf(
+            EncryptionServiceAsymmetricEncryptionAlgorithms.RSA,
+            EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding,
+            EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+    override val supportedAsymmetricKeyAlgorithms = arrayOf(EncryptionServiceAsymmetricKeyAlgorithms.RSA)
     override val encryptionServiceFileService = BouncyCastleFileService()
     override val encryptionServiceKeyService = BouncyCastleKeyService()
     override val encryptionServiceStringService = BouncyCastleStringService()

@@ -44,19 +44,19 @@ class BouncyCastleFileService : EncryptionServiceFileService() {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
         val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
-        copy(cipherInputStream, outputStream)
+        copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
 
     override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec, secureRandom)
         val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)
-        copy(inputStream,cipherOutputStream)
+        copy(inputStream,cipherOutputStream, encryptionCipher.blockSize)
     }
 
-    private fun copy(inputStream: InputStream, outputStream: OutputStream) {
+    private fun copy(inputStream: InputStream, outputStream: OutputStream, blockSize: Int) {
         try {
-            val byteArray = ByteArray(1024)
+            val byteArray = ByteArray(blockSize)
             var inputLength = inputStream.read(byteArray)
             while (inputLength != -1) {
                 outputStream.write(byteArray, 0, inputLength)
@@ -71,11 +71,17 @@ class BouncyCastleFileService : EncryptionServiceFileService() {
         }
     }
 
-    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
+        val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
+        decryptionCipher.init(Cipher.DECRYPT_MODE, key, secureRandom)
+        val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
+        copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
 
-    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
+        val encryptionCipher = Cipher.getInstance("RSA/None/PKCS1PADDING", "BC")
+        encryptionCipher.init(Cipher.ENCRYPT_MODE, key, secureRandom)
+        val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)
+        copy(inputStream,cipherOutputStream, encryptionCipher.blockSize)
     }
 }
