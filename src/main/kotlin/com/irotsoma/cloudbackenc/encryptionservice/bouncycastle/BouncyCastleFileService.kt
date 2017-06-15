@@ -79,7 +79,7 @@ class BouncyCastleFileService : EncryptionServiceFileService() {
     }
 
     override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
-        val encryptionCipher = Cipher.getInstance("RSA/None/PKCS1PADDING", "BC")
+        val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, secureRandom)
         val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)
         copy(inputStream,cipherOutputStream, encryptionCipher.blockSize)
