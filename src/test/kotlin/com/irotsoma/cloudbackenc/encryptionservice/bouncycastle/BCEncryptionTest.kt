@@ -18,13 +18,12 @@
  */
 package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 
+import com.irotsoma.cloudbackenc.common.Utilities.hashFile
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.*
-import org.bouncycastle.util.encoders.Hex
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
-import java.security.MessageDigest
 import java.security.SecureRandom
 import java.util.*
 import javax.crypto.spec.IvParameterSpec
@@ -37,22 +36,22 @@ class BCEncryptionTests {
     val testSalt = "randomvalue"
 
     @Test
-    fun TestEncryptDecryptFileWithSymmetricKey(){
+    fun testEncryptDecryptFileWithSymmetricKey(){
 
         val testFilePath = javaClass.classLoader.getResource("TestEncryptFile.dat").path
         val expectedHash = hashFile(File(testFilePath))
         val encryptionFactory = BouncyCastleServiceFactory()
 
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.AES)
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding)
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, -1, EncryptionServiceSymmetricEncryptionAlgorithms.AES_ECB_WithCTS)
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.SKIPJACK, 128, -1, EncryptionServiceSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding)
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.Twofish, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
-        RunFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.Blowfish, 128, 8, EncryptionServiceSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.AES)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.AES, 128, -1, EncryptionServiceSymmetricEncryptionAlgorithms.AES_ECB_WithCTS)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.SKIPJACK, 128, -1, EncryptionServiceSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.Twofish, 128, 16, EncryptionServiceSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionServiceSymmetricKeyAlgorithms.Blowfish, 128, 8, EncryptionServiceSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding)
 
     }
 
-    fun RunFileTestWithSymmetricKey(testFilePath: String, expectedHash: String, encryptionFactory:BouncyCastleServiceFactory, keyAlgorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize:Int, ivBlockSize: Int, encryptionAlgorithm: EncryptionServiceSymmetricEncryptionAlgorithms ){
+    fun runFileTestWithSymmetricKey(testFilePath: String, expectedHash: String, encryptionFactory:BouncyCastleServiceFactory, keyAlgorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize:Int, ivBlockSize: Int, encryptionAlgorithm: EncryptionServiceSymmetricEncryptionAlgorithms ){
         val testKey = BouncyCastleServiceFactory().encryptionServiceKeyService.generateSymmetricKey(keyAlgorithm, keySize, secureRandom)
         val encryptedFile = File.createTempFile("encryptedfile_",".dat")
         var ivParameterSpec: IvParameterSpec? = null
@@ -71,14 +70,14 @@ class BCEncryptionTests {
     }
 
     @Test
-    fun TestEncryptDecryptDataWithAsymmetricKey(){
+    fun testEncryptDecryptDataWithAsymmetricKey(){
         val encryptionFactory = BouncyCastleServiceFactory()
-        RunTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,1024,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA)
-        RunTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,4096,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-        RunTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,2048,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+        runTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,1024,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA)
+        runTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,4096,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
+        runTestWithAsymmetricKey(encryptionFactory,EncryptionServiceAsymmetricKeyAlgorithms.RSA,2048,EncryptionServiceAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
     }
 
-    fun RunTestWithAsymmetricKey(encryptionFactory:BouncyCastleServiceFactory, keyAlgorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize:Int, encryptionAlgorithm: EncryptionServiceAsymmetricEncryptionAlgorithms){
+    fun runTestWithAsymmetricKey(encryptionFactory:BouncyCastleServiceFactory, keyAlgorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize:Int, encryptionAlgorithm: EncryptionServiceAsymmetricEncryptionAlgorithms){
         val testKeys = BouncyCastleServiceFactory().encryptionServiceKeyService.generateAsymmetricKeys(keyAlgorithm, keySize, secureRandom)
         val testBytes = ByteArray(encryptionAlgorithm.maxDataSize()[keySize]!!)
         secureRandom.nextBytes(testBytes)
@@ -91,23 +90,8 @@ class BCEncryptionTests {
     }
 
 
-
-
-    fun hashFile(file: File): String{
-        val messageDigest = MessageDigest.getInstance("SHA1")
-        val decryptedFileInputStream = file.inputStream()
-        val dataBytes = ByteArray(1024)
-        var readBytes = decryptedFileInputStream.read(dataBytes)
-        while (readBytes > -1){
-            messageDigest.update(dataBytes,0,readBytes)
-            readBytes = decryptedFileInputStream.read(dataBytes)
-        }
-        val outputBytes: ByteArray = messageDigest.digest()
-        return Hex.toHexString(outputBytes)
-    }
-
     @Test
-    fun TestEncryptDecryptStringWithSymmetricKey(){
+    fun testEncryptDecryptStringWithSymmetricKey(){
         val testKey = BouncyCastleServiceFactory().encryptionServiceKeyService.generateSymmetricKey(EncryptionServiceSymmetricKeyAlgorithms.AES, 128, secureRandom)
         val encryptionFactory = BouncyCastleServiceFactory()
         val byteArray = ByteArray(16)
@@ -119,7 +103,7 @@ class BCEncryptionTests {
     }
 
     @Test
-    fun TestEncryptDecryptStringWithPasswordBasedKey(){
+    fun testEncryptDecryptStringWithPasswordBasedKey(){
         val encryptionFactory = BouncyCastleServiceFactory()
         val byteArray = ByteArray(16)
         secureRandom.nextBytes(byteArray)
