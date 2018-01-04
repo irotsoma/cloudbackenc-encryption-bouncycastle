@@ -21,11 +21,12 @@ package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
 import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
+import java.util.*
 
 /**
  * Bouncy Castle Encryption Service Factory
  */
-class BouncyCastleServiceFactory: EncryptionServiceFactory {
+class BouncyCastleServiceFactory: EncryptionServiceFactory() {
     override val supportedPBKDFAlgorithms = arrayOf(EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1)
     override val supportedSymmetricKeyAlgorithms = arrayOf(
             EncryptionServiceSymmetricKeyAlgorithms.AES,
