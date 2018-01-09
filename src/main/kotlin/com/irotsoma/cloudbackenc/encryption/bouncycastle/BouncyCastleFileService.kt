@@ -16,12 +16,12 @@
 /*
  * Created by irotsoma on 8/25/2016.
  */
-package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
+package com.irotsoma.cloudbackenc.encryption.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceAsymmetricEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceException
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceFileService
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionAsymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionException
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionFileService
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionSymmetricEncryptionAlgorithms
 import mu.KLogging
 import java.io.InputStream
 import java.io.OutputStream
@@ -37,17 +37,17 @@ import javax.crypto.spec.IvParameterSpec
 /**
  * Bouncy Castle implementation of encryption and decryption algorithms for files.
  */
-class BouncyCastleFileService : EncryptionServiceFileService() {
+class BouncyCastleFileService : EncryptionFileService() {
     /** kotlin-logging implementation*/
     companion object: KLogging()
-    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
+    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
         val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
         copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
 
-    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
+    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec, secureRandom)
         val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)
@@ -67,18 +67,18 @@ class BouncyCastleFileService : EncryptionServiceFileService() {
             outputStream.close()
         } catch (ex: Exception) {
             logger.error{ex.message}
-            throw EncryptionServiceException(ex.message, ex)
+            throw EncryptionException(ex.message, ex)
         }
     }
 
-    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
+    override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, secureRandom)
         val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
         copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
 
-    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
+    override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, secureRandom)
         val cipherOutputStream = CipherOutputStream(outputStream, encryptionCipher)

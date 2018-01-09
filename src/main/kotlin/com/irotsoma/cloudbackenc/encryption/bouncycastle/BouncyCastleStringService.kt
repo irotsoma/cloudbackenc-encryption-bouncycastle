@@ -16,11 +16,11 @@
 /*
  * Created by irotsoma on 8/25/2016.
  */
-package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
+package com.irotsoma.cloudbackenc.encryption.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceAsymmetricEncryptionAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceStringService
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionAsymmetricEncryptionAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionStringService
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionSymmetricEncryptionAlgorithms
 import org.bouncycastle.util.encoders.Base64
 import java.security.PrivateKey
 import java.security.PublicKey
@@ -36,13 +36,13 @@ import javax.crypto.spec.IvParameterSpec
 
 
 
-class BouncyCastleStringService: EncryptionServiceStringService {
+class BouncyCastleStringService: EncryptionStringService {
 
-    override fun decrypt(input: String, key: PrivateKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
+    override fun decrypt(input: String, key: PrivateKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun decrypt(input: String, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
+    override fun decrypt(input: String, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
         val inputBytes = Base64.decode(input.toByteArray(Charsets.UTF_8))
@@ -50,12 +50,12 @@ class BouncyCastleStringService: EncryptionServiceStringService {
         return String(result)
     }
 
-    override fun encrypt(input: String, key: PublicKey, algorithm: EncryptionServiceAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
+    override fun encrypt(input: String, key: PublicKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
         throw UnsupportedOperationException("not implemented")
 
     }
 
-    override fun encrypt(input: String, key: SecretKey, algorithm: EncryptionServiceSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
+    override fun encrypt(input: String, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?): String {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec, secureRandom)
         val result = encryptionCipher.doFinal(input.toByteArray(Charsets.UTF_8))

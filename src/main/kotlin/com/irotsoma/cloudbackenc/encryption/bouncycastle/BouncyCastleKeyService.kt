@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2017  Irotsoma, LLC
+ * Copyright (C) 2016-2018  Irotsoma, LLC
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,12 +16,12 @@
 /*
  * Created by irotsoma on 8/25/2016.
  */
-package com.irotsoma.cloudbackenc.encryptionservice.bouncycastle
+package com.irotsoma.cloudbackenc.encryption.bouncycastle
 
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceAsymmetricKeyAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceKeyService
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServicePBKDFAlgorithms
-import com.irotsoma.cloudbackenc.common.encryptionserviceinterface.EncryptionServiceSymmetricKeyAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionAsymmetricKeyAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionKeyService
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionPBKDFAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionSymmetricKeyAlgorithms
 import mu.KLogging
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -36,16 +36,16 @@ import javax.crypto.spec.PBEKeySpec
  *
  * Bouncy Castle implementation of encryption key generation services
  */
-class BouncyCastleKeyService: EncryptionServiceKeyService {
+class BouncyCastleKeyService: EncryptionKeyService {
     companion object: KLogging() {
         const val DEFAULT_PBKDF_ITERATIONS = 64000
     }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
-        return generatePasswordBasedKey(password, salt, EncryptionServicePBKDFAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
+        return generatePasswordBasedKey(password, salt, EncryptionPBKDFAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
     }
 
-    override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionServicePBKDFAlgorithms, keySize: Int, iterations: Int): SecretKey? {
+    override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionPBKDFAlgorithms, keySize: Int, iterations: Int): SecretKey? {
         val keySpec = PBEKeySpec(password.toCharArray(), salt, iterations, keySize)
         val keyFactory = SecretKeyFactory.getInstance(algorithm.value, "BC")
         return keyFactory.generateSecret(keySpec)
@@ -54,12 +54,12 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
 
 
     override fun generateSymmetricKey(): SecretKey? {
-        return generateSymmetricKey(EncryptionServiceSymmetricKeyAlgorithms.AES, 128, SecureRandom.getInstanceStrong())
+        return generateSymmetricKey(EncryptionSymmetricKeyAlgorithms.AES, 128, SecureRandom.getInstanceStrong())
     }
-    override fun generateSymmetricKey(algorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize: Int): SecretKey? {
+    override fun generateSymmetricKey(algorithm: EncryptionSymmetricKeyAlgorithms, keySize: Int): SecretKey? {
         return generateSymmetricKey(algorithm, keySize, SecureRandom.getInstanceStrong())
     }
-    override fun generateSymmetricKey(algorithm: EncryptionServiceSymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): SecretKey? {
+    override fun generateSymmetricKey(algorithm: EncryptionSymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): SecretKey? {
         try {
             val keyGen = KeyGenerator.getInstance(algorithm.value, "BC")
             keyGen.init(keySize, secureRandom)
@@ -71,13 +71,13 @@ class BouncyCastleKeyService: EncryptionServiceKeyService {
     }
 
     override fun generateAsymmetricKeys(): KeyPair? {
-        return generateAsymmetricKeys(EncryptionServiceAsymmetricKeyAlgorithms.RSA, 4096, SecureRandom.getInstanceStrong())
+        return generateAsymmetricKeys(EncryptionAsymmetricKeyAlgorithms.RSA, 4096, SecureRandom.getInstanceStrong())
     }
-    override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int): KeyPair? {
+    override fun generateAsymmetricKeys(algorithm: EncryptionAsymmetricKeyAlgorithms, keySize: Int): KeyPair? {
         return generateAsymmetricKeys(algorithm, keySize, SecureRandom.getInstanceStrong())
     }
 
-    override fun generateAsymmetricKeys(algorithm: EncryptionServiceAsymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): KeyPair? {
+    override fun generateAsymmetricKeys(algorithm: EncryptionAsymmetricKeyAlgorithms, keySize: Int, secureRandom: SecureRandom): KeyPair? {
         try{
             val keyGen = KeyPairGenerator.getInstance(algorithm.value,"BC")
             keyGen.initialize(keySize, secureRandom)

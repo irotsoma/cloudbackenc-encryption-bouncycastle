@@ -35,7 +35,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
-group 'com.irotsoma.cloudbackenc.encryptionservice'
+group 'com.irotsoma.cloudbackenc.encryption'
 version '0.3-SNAPSHOT'
 
 apply plugin: 'java'
@@ -54,7 +54,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.irotsoma.cloudbackenc:common:$commonVersion"
-    compile "com.irotsoma.cloudbackenc.common:encryptionserviceinterface:$commonVersion"
+    compile "com.irotsoma.cloudbackenc.common:encryption:$commonVersion"
     compile "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
     //logging
     compile "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
