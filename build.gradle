@@ -15,11 +15,11 @@
  */
 buildscript {
     ext.commonVersion='0.3-SNAPSHOT'
-    ext.kotlin_version = '1.2.10'
-    ext.dokkaVersion = '0.9.14'
+    ext.kotlin_version = '1.2.21'
+    ext.dokkaVersion = '0.9.15'
     ext.junitVersion = '4.12'
-    ext.bouncyCastleVersion = '1.58'
-    ext.kotlinLoggingVersion = '1.4.6'
+    ext.bouncyCastleVersion = '1.59'
+    ext.kotlinLoggingVersion = '1.5.3'
 
     repositories {
         mavenCentral()
