@@ -14,7 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 buildscript {
-    ext.commonVersion='0.3-SNAPSHOT'
+    ext.commonVersion='0.3'
     ext.kotlin_version = '1.2.30'
     ext.dokkaVersion = '0.9.14'
     ext.junitVersion = '4.12'
@@ -36,7 +36,7 @@ plugins {
 }
 
 group 'com.irotsoma.cloudbackenc.encryption'
-version '0.3-SNAPSHOT'
+version '0.3'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
