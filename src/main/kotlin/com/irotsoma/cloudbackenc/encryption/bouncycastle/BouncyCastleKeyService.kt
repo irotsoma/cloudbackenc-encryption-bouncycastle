@@ -20,7 +20,7 @@ package com.irotsoma.cloudbackenc.encryption.bouncycastle
 
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionAsymmetricKeyAlgorithms
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionKeyService
-import com.irotsoma.cloudbackenc.common.encryption.EncryptionPBKDFAlgorithms
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionPBKDFEncryptionAlgorithms
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionSymmetricKeyAlgorithms
 import mu.KLogging
 import java.security.KeyPair
@@ -42,16 +42,14 @@ class BouncyCastleKeyService: EncryptionKeyService {
     }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
-        return generatePasswordBasedKey(password, salt, EncryptionPBKDFAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
+        return generatePasswordBasedKey(password, salt, EncryptionPBKDFEncryptionAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
     }
 
-    override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionPBKDFAlgorithms, keySize: Int, iterations: Int): SecretKey? {
+    override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionPBKDFEncryptionAlgorithms, keySize: Int, iterations: Int): SecretKey? {
         val keySpec = PBEKeySpec(password.toCharArray(), salt, iterations, keySize)
         val keyFactory = SecretKeyFactory.getInstance(algorithm.value, "BC")
         return keyFactory.generateSecret(keySpec)
     }
-
-
 
     override fun generateSymmetricKey(): SecretKey? {
         return generateSymmetricKey(EncryptionSymmetricKeyAlgorithms.AES, 128, SecureRandom.getInstanceStrong())

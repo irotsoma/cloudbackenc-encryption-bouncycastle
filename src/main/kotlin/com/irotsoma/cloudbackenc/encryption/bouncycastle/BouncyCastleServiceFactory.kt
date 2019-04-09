@@ -26,7 +26,7 @@ import java.security.Security
  * Bouncy Castle Encryption Service Factory
  */
 class BouncyCastleServiceFactory: EncryptionFactory() {
-    override val supportedPBKDFAlgorithms = arrayOf(EncryptionPBKDFAlgorithms.PBKDF2WithHmacSHA1)
+    override val supportedPBKDFEncryptionAlgorithms = arrayOf(EncryptionPBKDFEncryptionAlgorithms.PBKDF2WithHmacSHA1)
     override val supportedSymmetricKeyAlgorithms = arrayOf(
             EncryptionSymmetricKeyAlgorithms.AES,
             EncryptionSymmetricKeyAlgorithms.Blowfish,
