@@ -44,7 +44,7 @@ class BouncyCastleServiceFactory: EncryptionFactory() {
             EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding,
             EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
     override val supportedAsymmetricKeyAlgorithms = arrayOf(EncryptionAsymmetricKeyAlgorithms.RSA)
-    override val encryptionFileService = BouncyCastleFileService()
+    override val encryptionStreamService = BouncyCastleStreamService()
     override val encryptionKeyService = BouncyCastleKeyService()
     override val encryptionStringService = BouncyCastleStringService()
     init{

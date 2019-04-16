@@ -60,9 +60,9 @@ class BCEncryptionTests {
             secureRandom.nextBytes(byteArray)
             ivParameterSpec =  IvParameterSpec(byteArray)
         }
-        encryptionFactory.encryptionFileService.encrypt(FileInputStream(testFilePath), encryptedFile.outputStream(), testKey!!, encryptionAlgorithm, ivParameterSpec, secureRandom)
+        encryptionFactory.encryptionStreamService.encrypt(FileInputStream(testFilePath), encryptedFile.outputStream(), testKey!!, encryptionAlgorithm, ivParameterSpec, secureRandom)
         val decryptedFile = File.createTempFile("decryptedfile_",".dat")
-        encryptionFactory.encryptionFileService.decrypt(encryptedFile.inputStream(), decryptedFile.outputStream(), testKey, encryptionAlgorithm, ivParameterSpec, secureRandom)
+        encryptionFactory.encryptionStreamService.decrypt(encryptedFile.inputStream(), decryptedFile.outputStream(), testKey, encryptionAlgorithm, ivParameterSpec, secureRandom)
         val hashString = hashFile(decryptedFile)
         encryptedFile.deleteOnExit()
         decryptedFile.deleteOnExit()
@@ -82,10 +82,10 @@ class BCEncryptionTests {
         val testBytes = ByteArray(encryptionAlgorithm.maxDataSize()[keySize]!!)
         secureRandom.nextBytes(testBytes)
         val encryptedDataStream = ByteArrayOutputStream()
-        encryptionFactory.encryptionFileService.encrypt(testBytes.inputStream(), encryptedDataStream, testKeys!!.public, encryptionAlgorithm, secureRandom)
+        encryptionFactory.encryptionStreamService.encrypt(testBytes.inputStream(), encryptedDataStream, testKeys!!.public, encryptionAlgorithm, secureRandom)
         val encryptedData = encryptedDataStream.toByteArray()
         val decryptedDataStream = ByteArrayOutputStream()
-        encryptionFactory.encryptionFileService.decrypt(encryptedData.inputStream(), decryptedDataStream, testKeys.private, encryptionAlgorithm, secureRandom)
+        encryptionFactory.encryptionStreamService.decrypt(encryptedData.inputStream(), decryptedDataStream, testKeys.private, encryptionAlgorithm, secureRandom)
         assert(Arrays.equals(testBytes, decryptedDataStream.toByteArray()))
     }
 

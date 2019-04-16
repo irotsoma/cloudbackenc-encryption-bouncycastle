@@ -20,7 +20,7 @@ package com.irotsoma.cloudbackenc.encryption.bouncycastle
 
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionAsymmetricEncryptionAlgorithms
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionException
-import com.irotsoma.cloudbackenc.common.encryption.EncryptionFileService
+import com.irotsoma.cloudbackenc.common.encryption.EncryptionStreamService
 import com.irotsoma.cloudbackenc.common.encryption.EncryptionSymmetricEncryptionAlgorithms
 import mu.KLogging
 import java.io.InputStream
@@ -37,16 +37,35 @@ import javax.crypto.spec.IvParameterSpec
 /**
  * Bouncy Castle implementation of encryption and decryption algorithms for files.
  */
-class BouncyCastleFileService : EncryptionFileService() {
+class BouncyCastleStreamService : EncryptionStreamService() {
     /** kotlin-logging implementation*/
     companion object: KLogging()
+    /**
+     * Decrypt data streams using symmetric (secret key) encryption.
+     *
+     * @param inputStream Input stream for the data to be decrypted.
+     * @param outputStream Output stream for the data after decryption
+     * @param key Secret key to be used to decrypt the data
+     * @param algorithm Algorithm from EncryptionSymmetricEncryptionAlgorithms to be used to decrypt the data.
+     * @param ivParameterSpec An instance of IvParameterSpec that contains the initialization vector for encryption algorithms that require it.  Use null if not required by the algorithm.
+     * @param secureRandom An instance of a SecureRandom random number generator.  If not sent, a new one will be generated using the default Java algorithm.  If encrypting or decrypting lots of files or strings, it is recommended to generate the SecureRandom once rather than once per call as it can be a resource intensive operation.
+     */
     override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, ivParameterSpec, secureRandom)
         val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
         copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
-
+    /**
+     * Encrypt dta streams using symmetric (secret key) encryption.
+     *
+     * @param inputStream Input stream for the data to be encrypted.
+     * @param outputStream Output stream for the data after encryption
+     * @param key Secret key to be used to encrypt the data
+     * @param algorithm Algorithm from EncryptionSymmetricEncryptionAlgorithms to be used to encrypt the data.
+     * @param ivParameterSpec An instance of IvParameterSpec that contains the initialization vector for encryption algorithms that require it.  Use null if not required by the algorithm.
+     * @param secureRandom An instance of a SecureRandom random number generator.  If not sent, a new one will be generated using the default Java algorithm.  If encrypting or decrypting lots of files or strings, it is recommended to generate the SecureRandom once rather than once per call as it can be a resource intensive operation.
+     */
     override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: SecretKey, algorithm: EncryptionSymmetricEncryptionAlgorithms, ivParameterSpec: IvParameterSpec?, secureRandom: SecureRandom?) {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec, secureRandom)
@@ -54,6 +73,13 @@ class BouncyCastleFileService : EncryptionFileService() {
         copy(inputStream,cipherOutputStream, encryptionCipher.blockSize)
     }
 
+    /**
+     * Simple function to copy streams.
+     *
+     * @param inputStream An InputStream of the data to be copied.
+     * @param outputStream An OutputStream for the destination of the data.
+     * @param blockSize The block size to be used for copying data.
+     */
     private fun copy(inputStream: InputStream, outputStream: OutputStream, blockSize: Int) {
         try {
             val byteArray = ByteArray(blockSize)
@@ -70,14 +96,30 @@ class BouncyCastleFileService : EncryptionFileService() {
             throw EncryptionException(ex.message, ex)
         }
     }
-
+    /**
+     * Decrypt data streams using asymmetric (public key) encryption.
+     *
+     * @param inputStream Input stream for the data to be decrypted.
+     * @param outputStream Output stream for the data after decryption
+     * @param key Secret key to be used to decrypt the data
+     * @param algorithm Algorithm from EncryptionAsymmetricEncryptionAlgorithms to be used to decrypt the data.
+     * @param secureRandom An instance of a SecureRandom random number generator.  If not sent, a new one will be generated using the default Java algorithm.  If encrypting or decrypting lots of files or strings, it is recommended to generate the SecureRandom once rather than once per call as it can be a resource intensive operation.
+     */
     override fun decrypt(inputStream: InputStream, outputStream: OutputStream, key: PrivateKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
         val decryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         decryptionCipher.init(Cipher.DECRYPT_MODE, key, secureRandom)
         val cipherInputStream = CipherInputStream(inputStream, decryptionCipher)
         copy(cipherInputStream, outputStream, decryptionCipher.blockSize)
     }
-
+    /**
+     * Encrypt data streams using asymmetric (public key) encryption.
+     *
+     * @param inputStream Input stream for the data to be encrypted.
+     * @param outputStream Output stream for the data after encryption
+     * @param key Public key to be used to encrypt the data
+     * @param algorithm Algorithm from EncryptionAsymmetricEncryptionAlgorithms to be used to encrypt the data.
+     * @param secureRandom An instance of a SecureRandom random number generator.  If not sent, a new one will be generated using the default Java algorithm.  If encrypting or decrypting lots of files or strings, it is recommended to generate the SecureRandom once rather than once per call as it can be a resource intensive operation.
+     */
     override fun encrypt(inputStream: InputStream, outputStream: OutputStream, key: PublicKey, algorithm: EncryptionAsymmetricEncryptionAlgorithms, secureRandom: SecureRandom?) {
         val encryptionCipher = Cipher.getInstance(algorithm.value, "BC")
         encryptionCipher.init(Cipher.ENCRYPT_MODE, key, secureRandom)
