@@ -55,7 +55,9 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.irotsoma.cloudbackenc:common:$commonVersion"
     compile "com.irotsoma.cloudbackenc.common:encryption:$commonVersion"
-    compile "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
+    //include bouncy castle as a runtime requirement and shadow it so the class path will include the library
+    runtime "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
+    shadow "org.bouncycastle:bcprov-jdk15on:$bouncyCastleVersion"
     //logging
     compile "io.github.microutils:kotlin-logging:$kotlinLoggingVersion"
     //test
@@ -70,6 +72,15 @@ signing {
 tasks.withType(Sign) {
     onlyIf { isReleaseVersion }
 }
+//copy the bouncy castle jar to the output directory. It must accompany this extension separately since it is signed.
+task copyBCJar(type: Copy){
+    dependsOn assemble
+    from configurations.runtime{
+        include 'bcprov*.jar'
+    }
+    into "$buildDir/libs/"
+}
+build.dependsOn 'copyBCJar'
 if (!isReleaseVersion) {
     configurations.all {
         // check for updates every build
@@ -108,10 +119,12 @@ task sourceJar(type: Jar) {
     from sourceSets.main.allSource
 }
 
-//configure shadowJar to only include dependencies not in central controller
+//configure shadowJar to only include this extension's classes
+//shadowJar will additionally create the appropriate class path entries for the bouncy castle library
+//JCE encryption providers must now be signed so they can't be included in the extension jar
 shadowJar{
     dependencies{
-        include (dependency('org.bouncycastle:bcprov-jdk15on'))
+        include (dependency('com.irotsoma.cloudbackenc.encryption:cloudbackenc-encryption-boundcycastle'))
     }
 }
 artifacts {
@@ -134,4 +147,5 @@ task copyLicenseReports(type: Copy){
 assemble.dependsOn 'downloadLicenses'
 assemble.dependsOn 'copyLicenseReports'
 copyLicenseReports.mustRunAfter 'downloadLicenses'
+
 
