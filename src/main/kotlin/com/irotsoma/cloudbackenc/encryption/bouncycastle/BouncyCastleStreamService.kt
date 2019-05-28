@@ -39,7 +39,7 @@ import javax.crypto.spec.IvParameterSpec
  */
 class BouncyCastleStreamService : EncryptionStreamService() {
     /** kotlin-logging implementation*/
-    companion object: KLogging()
+    private companion object: KLogging()
     /**
      * Decrypt data streams using symmetric (secret key) encryption.
      *

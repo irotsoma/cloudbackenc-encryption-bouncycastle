@@ -37,7 +37,7 @@ import javax.crypto.spec.PBEKeySpec
  * Bouncy Castle implementation of encryption key generation services
  */
 class BouncyCastleKeyService: EncryptionKeyService {
-    companion object: KLogging() {
+    private companion object: KLogging() {
         const val DEFAULT_PBKDF_ITERATIONS = 64000
     }
 
