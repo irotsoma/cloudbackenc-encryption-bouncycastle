@@ -42,7 +42,7 @@ class BouncyCastleKeyService: EncryptionKeyService {
     }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray): SecretKey? {
-        return generatePasswordBasedKey(password, salt, EncryptionPBKDFEncryptionAlgorithms.PBKDF2WithHmacSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
+        return generatePasswordBasedKey(password, salt, EncryptionPBKDFEncryptionAlgorithms.PBKDF2WITHHMACSHA1, 128, DEFAULT_PBKDF_ITERATIONS)
     }
 
     override fun generatePasswordBasedKey(password:String, salt: ByteArray, algorithm: EncryptionPBKDFEncryptionAlgorithms, keySize: Int, iterations: Int): SecretKey? {

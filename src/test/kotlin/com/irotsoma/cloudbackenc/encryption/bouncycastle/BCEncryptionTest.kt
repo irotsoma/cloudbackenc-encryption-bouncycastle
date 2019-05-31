@@ -43,11 +43,11 @@ class BCEncryptionTests {
         val encryptionFactory = BouncyCastleServiceFactory()
 
         runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.AES, 128, 16, EncryptionSymmetricEncryptionAlgorithms.AES)
-        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.AES, 128, 16, EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding)
-        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.AES, 128, -1, EncryptionSymmetricEncryptionAlgorithms.AES_ECB_WithCTS)
-        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.SKIPJACK, 128, -1, EncryptionSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding)
-        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.Twofish, 128, 16, EncryptionSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
-        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.Blowfish, 128, 8, EncryptionSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.AES, 128, 16, EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.AES, 128, -1, EncryptionSymmetricEncryptionAlgorithms.AES_ECB_PKCS5PADDING)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.SKIPJACK, 128, -1, EncryptionSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7PADDING)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.TWOFISH, 128, 16, EncryptionSymmetricEncryptionAlgorithms.TWOFISH_CBC_PKCS5PADDING)
+        runFileTestWithSymmetricKey(testFilePath, expectedHash, encryptionFactory, EncryptionSymmetricKeyAlgorithms.BLOWFISH, 128, 8, EncryptionSymmetricEncryptionAlgorithms.BLOWFISH_CBC_PKCS5PADDING)
 
     }
 
@@ -73,8 +73,8 @@ class BCEncryptionTests {
     fun testEncryptDecryptDataWithAsymmetricKey(){
         val encryptionFactory = BouncyCastleServiceFactory()
         runTestWithAsymmetricKey(encryptionFactory,EncryptionAsymmetricKeyAlgorithms.RSA,1024,EncryptionAsymmetricEncryptionAlgorithms.RSA)
-        runTestWithAsymmetricKey(encryptionFactory,EncryptionAsymmetricKeyAlgorithms.RSA,4096,EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding)
-        runTestWithAsymmetricKey(encryptionFactory,EncryptionAsymmetricKeyAlgorithms.RSA,2048,EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+        runTestWithAsymmetricKey(encryptionFactory,EncryptionAsymmetricKeyAlgorithms.RSA,4096,EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWITHSHA1ANDMGF1PADDING)
+        runTestWithAsymmetricKey(encryptionFactory,EncryptionAsymmetricKeyAlgorithms.RSA,2048,EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWITHSHA256ANDMGF1PADDING)
     }
 
     private fun runTestWithAsymmetricKey(encryptionFactory: BouncyCastleServiceFactory, keyAlgorithm: EncryptionAsymmetricKeyAlgorithms, keySize:Int, encryptionAlgorithm: EncryptionAsymmetricEncryptionAlgorithms){
@@ -97,8 +97,8 @@ class BCEncryptionTests {
         val byteArray = ByteArray(16)
         secureRandom.nextBytes(byteArray)
         val ivParameterSpec = IvParameterSpec(byteArray)
-        val encryptedString = encryptionFactory.encryptionStringService.encrypt(testString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding, ivParameterSpec, secureRandom)
-        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding, ivParameterSpec, secureRandom)
+        val encryptedString = encryptionFactory.encryptionStringService.encrypt(testString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
+        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
         assert(testString == decryptedString)
     }
 
@@ -108,9 +108,9 @@ class BCEncryptionTests {
         val byteArray = ByteArray(16)
         secureRandom.nextBytes(byteArray)
         val ivParameterSpec = IvParameterSpec(byteArray)
-        val pbKey = encryptionFactory.encryptionKeyService.generatePasswordBasedKey(testPassword,testSalt.toByteArray(Charsets.UTF_8),EncryptionPBKDFEncryptionAlgorithms.PBKDF2WithHmacSHA1,128, 128000)
-        val encryptedString = encryptionFactory.encryptionStringService.encrypt(testString,pbKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding, ivParameterSpec, secureRandom)
-        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,pbKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding, ivParameterSpec, secureRandom)
+        val pbKey = encryptionFactory.encryptionKeyService.generatePasswordBasedKey(testPassword,testSalt.toByteArray(Charsets.UTF_8),EncryptionPBKDFEncryptionAlgorithms.PBKDF2WITHHMACSHA1,128, 128000)
+        val encryptedString = encryptionFactory.encryptionStringService.encrypt(testString,pbKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
+        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,pbKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
         assert(testString == decryptedString)
     }
 

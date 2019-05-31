@@ -26,23 +26,23 @@ import java.security.Security
  * Bouncy Castle Encryption Service Factory
  */
 class BouncyCastleServiceFactory: EncryptionFactory() {
-    override val supportedPBKDFEncryptionAlgorithms = arrayOf(EncryptionPBKDFEncryptionAlgorithms.PBKDF2WithHmacSHA1)
+    override val supportedPBKDFEncryptionAlgorithms = arrayOf(EncryptionPBKDFEncryptionAlgorithms.PBKDF2WITHHMACSHA1)
     override val supportedSymmetricKeyAlgorithms = arrayOf(
             EncryptionSymmetricKeyAlgorithms.AES,
-            EncryptionSymmetricKeyAlgorithms.Blowfish,
+            EncryptionSymmetricKeyAlgorithms.BLOWFISH,
             EncryptionSymmetricKeyAlgorithms.SKIPJACK,
-            EncryptionSymmetricKeyAlgorithms.Twofish)
+            EncryptionSymmetricKeyAlgorithms.TWOFISH)
     override val supportedSymmetricEncryptionAlgorithms = arrayOf(
             EncryptionSymmetricEncryptionAlgorithms.AES,
-            EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5Padding,
-            EncryptionSymmetricEncryptionAlgorithms.AES_ECB_WithCTS,
-            EncryptionSymmetricEncryptionAlgorithms.Blowfish_CBC_PKCS5Padding,
-            EncryptionSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7Padding,
-            EncryptionSymmetricEncryptionAlgorithms.Twofish_CBC_PKCS5Padding)
+            EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING,
+            EncryptionSymmetricEncryptionAlgorithms.AES_ECB_WITHCTS,
+            EncryptionSymmetricEncryptionAlgorithms.BLOWFISH_CBC_PKCS5PADDING,
+            EncryptionSymmetricEncryptionAlgorithms.SKIPJACK_ECB_PKCS7PADDING,
+            EncryptionSymmetricEncryptionAlgorithms.TWOFISH_CBC_PKCS5PADDING)
     override val supportedAsymmetricEncryptionAlgorithms = arrayOf(
             EncryptionAsymmetricEncryptionAlgorithms.RSA,
-            EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA1AndMGF1Padding,
-            EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWithSHA256AndMGF1Padding)
+            EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWITHSHA1ANDMGF1PADDING,
+            EncryptionAsymmetricEncryptionAlgorithms.RSA_ECB_OAEPWITHSHA256ANDMGF1PADDING)
     override val supportedAsymmetricKeyAlgorithms = arrayOf(EncryptionAsymmetricKeyAlgorithms.RSA)
     override val encryptionStreamService = BouncyCastleStreamService()
     override val encryptionKeyService = BouncyCastleKeyService()
