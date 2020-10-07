@@ -98,7 +98,7 @@ class BCEncryptionTests {
         secureRandom.nextBytes(byteArray)
         val ivParameterSpec = IvParameterSpec(byteArray)
         val encryptedString = encryptionFactory.encryptionStringService.encrypt(testString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
-        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,testKey!!,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
+        val decryptedString = encryptionFactory.encryptionStringService.decrypt(encryptedString,testKey,EncryptionSymmetricEncryptionAlgorithms.AES_CBC_PKCS5PADDING, ivParameterSpec, secureRandom)
         assert(testString == decryptedString)
     }
 
