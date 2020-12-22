@@ -1,7 +1,7 @@
 # encryptionservice-bouncycastle 
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1cbe09f4e59e4debbb97db8e8ada24df)](https://www.codacy.com/app/irotsoma/cloudbackenc-encryption-bouncycastle?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=irotsoma/cloudbackenc-encryption-bouncycastle&amp;utm_campaign=Badge_Grade)
-[![Build Status](https://travis-ci.org/irotsoma/cloudbackenc-encryption-bouncycastle.svg?branch=master)](https://travis-ci.org/irotsoma/cloudbackenc-encryption-bouncycastle)
+[![Build Status](https://travis-ci.com/irotsoma/cloudbackenc-encryption-bouncycastle.svg?branch=master)](https://travis-ci.com/irotsoma/cloudbackenc-encryption-bouncycastle)
 
 Encryption extension for CloudBackEnc using bouncycastle APIs
 
